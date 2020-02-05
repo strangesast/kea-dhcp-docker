@@ -24,8 +24,9 @@ run wget -O /tmp/kea-1.7.4.tar.gz https://ftp.isc.org/isc/kea/1.7.4/kea-1.7.4.ta
 #declare -x PATH="/usr/lib64/ccache:$PATH"
 run autoreconf --install && \
   ./configure --with-pgsql && \
-  make -j4 && \
-  checkinstall --install=no -D make install && \
+  make -j4
+
+run checkinstall --pkgversion=1.7.4 --fstrans=no --install=no -D make install && \
   mv kea*.deb kea.deb
 
 from debian:stretch
