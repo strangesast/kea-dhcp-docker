@@ -37,10 +37,5 @@ run dpkg -i /tmp/kea.deb && \
   echo "/usr/local/lib/hooks" > /etc/ld.so.conf.d/kea.conf && \
   ldconfig
 
-copy kea-dhcp4.conf /usr/local/etc/kea/kea-dhcp4.conf
-run mkdir -p /var/lib/kea
-# copy keactrl.conf .
-
-cmd ["/usr/local/sbin/kea-dhcp4", "-c", "/usr/local/etc/kea/kea-dhcp4.conf"]
-
-#cmd ["keactrl", "start", "-c", "./keactrl.conf"]
+copy kea-dhcp4.conf.json .
+cmd ["/usr/local/sbin/kea-dhcp4", "-c", "kea-dhcp4.conf.json"]
