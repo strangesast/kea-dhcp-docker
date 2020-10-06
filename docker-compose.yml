@@ -1,6 +1,35 @@
 version: '3.7'
 services:
+  base:
+    image: 'kea-dhcp-docker_base'
+    build:
+      context: .
+      dockerfile: docker/base/Dockerfile
+  init:
+    image: 'kea-dhcp-docker_init'
+    build:
+      context: .
+      dockerfile: docker/init/Dockerfile
   dhcp4:
+    image: 'kea-dhcp-docker_dhcp4'
     build:
       context: .
       dockerfile: docker/dhcp4/Dockerfile
+    depends_on:
+      - init
+  db:
+    image: postgres
+    volumes:
+      - ./init-tables.sql:/docker-entrypoint-initdb.d/init-tables.sql
+    environment:
+      - POSTGRES_PASSWORD=root
+  stork:
+    image: 'kea-dhcp-docker_stork'
+    build:
+      context: .
+      dockerfile: docker/stork/Dockerfile
+  test:
+    image: 'kea-dhcp-docker_test'
+    build:
+      context: .
+      dockerfile: docker/test/Dockerfile
